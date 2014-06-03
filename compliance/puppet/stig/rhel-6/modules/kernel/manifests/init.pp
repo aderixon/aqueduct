@@ -134,7 +134,8 @@ define kernel::disableModule ( $module = '' )
 			lens    => "modprobe.lns",
 			incl    => "/etc/modprobe.d/disabled.conf",
 			changes => [
-				"set install[. = '$module /bin/false'] '$module /bin/false'"
+				"set install[. = '$module'] '$module'",
+				"set install[. = '$module']/command /bin/false"
 			];
 	}
 }

@@ -43,12 +43,13 @@ class pam {
 		"Limit the Number of Concurrent Login Sessions Allowed Per User":
 			context => "/files/etc/security/limits.conf",
 			changes => [
-				"rm domain[.='*'][./type='hard and ./item='maxlogins']",
+				"rm domain[.='*'][./type='hard' and ./item='maxlogins']",
 				"set domain[last() + 1] '*'",
 				"set domain[last()]/type 'hard'",
 				"set domain[last()]/item 'maxlogins'",
 				"set domain[last()]/value 10",
-			];
+			],
+                        onlyif  => "match domain[.='*'][./type='hard' and ./item='maxlogins' and ./value='10'] size == 0";
 		# This feels like a bug in SSG
 		#"Prevent Log In to Accounts With Empty Password":
 		#	context => "/files/etc/pam.d/system-auth",
