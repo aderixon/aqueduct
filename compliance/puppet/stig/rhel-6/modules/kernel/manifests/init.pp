@@ -110,6 +110,20 @@ class kernel {
 		#	],
 		#	onlyif  => "match password size == 0";
 	}
+	if ($shared::server == true) {
+		augeas {
+			"Disable graphical boot on servers in /etc/grub.conf":
+				context => "/files/etc/grub.conf",
+				lens    => "grub.lns",
+				incl    => "/etc/grub.conf",
+				changes => "rm title/kernel/rhgb";
+			"Disable quiet boot on servers in /etc/grub.conf":
+				context => "/files/etc/grub.conf",
+				lens    => "grub.lns",
+				incl    => "/etc/grub.conf",
+				changes => "rm title/kernel/quiet";
+		}
+	}
 
 	exec {
 		"Enable SELinux":
