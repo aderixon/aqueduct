@@ -82,12 +82,27 @@ class services {
 			"sendmail",
 			"smartd",
 			#"sshd", # disables SSH, uncomment this and remember to uncomment the SSH module in nodes.pp
-			"sysstat",
+			#"sysstat",	# see below
 			"vsftpd", # if vsftpd must be enabled, uncomment ftp section in packages
 		]:
 			ensure    => false,
 			enable    => false,
 			hasstatus => true;
+	}
+
+	if $shared::server {
+		service { 'sysstat':
+			ensure    => true,
+			enable    => true,
+			hasstatus => true,
+			require   => Package['sysstat'],
+		}
+	} else {
+		service { 'sysstat':
+			ensure    => false,
+			enable    => false,
+			hasstatus => true,
+		}
 	}
 
 	exec {

@@ -44,11 +44,22 @@ class packages {
 	# irqbalance only recommended on multiprocessor systems
 	if ($processorcount > 1) {
 		package { 'irqbalance':
-			ensure => 'present',
+			ensure  => 'present',
 			require => Class['yum'],
 		}
 	} else {
 		package { 'irqbalance':
+			ensure => 'absent',
+		}
+	}
+
+	# perf gathering only used on servers
+	if $shared::server {
+		package { 'sysstat':
+			ensure  => 'present',
+			require => Class['yum'],
+	} else {
+		package { 'sysstat':
 			ensure => 'absent',
 		}
 	}

@@ -110,7 +110,7 @@ class kernel {
 		#	],
 		#	onlyif  => "match password size == 0";
 	}
-	if ($shared::server == true) {
+	if $shared::server {
 		augeas {
 			"Disable graphical boot on servers in /etc/grub.conf":
 				context => "/files/etc/grub.conf",
