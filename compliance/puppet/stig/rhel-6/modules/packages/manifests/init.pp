@@ -41,6 +41,18 @@ class packages {
 			require => Class["yum"];
 	}
 
+	# irqbalance only recommended on multiprocessor systems
+	if ($processorcount > 1) {
+		package { 'irqbalance':
+			ensure => 'present',
+			require => Class['yum'],
+		}
+	} else {
+		package { 'irqbalance':
+			ensure => 'absent',
+		}
+	}
+
 	if !$shared::needs_x11 {
 		package {
 			# yum groupremove "X Window System"

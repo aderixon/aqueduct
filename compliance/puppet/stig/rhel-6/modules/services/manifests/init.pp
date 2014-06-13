@@ -23,7 +23,7 @@ class services {
 	service {
 		[
 			"crond",
-			"irqbalance",
+			#"irqbalance",	# see below
 			#"pcscd", # CAC support
 			"psacct",
 			"restorecond",
@@ -32,6 +32,16 @@ class services {
 			ensure    => true,
 			enable    => true,
 			hasstatus => true;
+	}
+
+	# irqbalance only recommended on multiprocessor systems
+	if ($processorcount > 1) {
+		service { 'irqbalance':
+			ensure	  => true,
+			enable	  => true,
+			hasstatus => true,
+			require	  => Package[irqbalance],
+		}
 	}
 
 	service {
